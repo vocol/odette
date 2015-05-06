@@ -1,0 +1,55 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix odette: <https://vocab.eccenca.com/odette/> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+@prefix eccenca: <https://vocab.eccenca.com/mdm/> .
+
+eccenca:id a odette:LegalHeadOffice;
+  odette:lastUpdate "2014-07-23T19:32:52"^^xsd:dateTime;
+  odette:logo <http://eccenca.com/static/img/logo-eccenca-darktext.png>;
+  odette:homepage <http://eccenca.com>;
+  odette:name "Eccenca GmbH";
+  odette:emailAddress "contact@eccenca.com";
+  odette:address eccenca:Address;
+  odette:telephoneNumber "+49 (0) 341 - 26 50 80 28";
+  odette:faxNumber "+49 (0) 341 - 26 48 93 05";
+  odette:vATRegistrationId "DE999999999";
+  odette:fiscalRegistrationId "1234";
+  odette:additionalLink <http://blogs.eccenca.com>;
+  odette:standardFormContract <http://eccenca.com/agb.html>;
+  odette:billingAddress eccenca:BillingAddress;
+  odette:officeLocation eccenca:Stuttgart;
+  odette:officeLocation eccenca:id;
+  odette:tradeName "eccenca".
+
+<http://blogs.eccenca.com> a odette:Document;
+  rdfs:label "eccenca Blog".
+
+<http://eccenca.com/agb.html> a odette:Document;
+  rdfs:label "AGBs".
+
+eccenca:BillingAddress a odette:Address;
+  odette:street "Hainstr. 18";
+  odette:city "Leipzig";
+  odette:postCode "04109";
+  odette:countryCode "DE";
+  odette:subCountryCode "DE-SN".
+
+eccenca:Address a odette:Address;
+  odette:street "Hainstr. 8";
+  odette:city "Leipzig";
+  odette:postCode "04109";
+  odette:countryCode "DE";
+  odette:subCountryCode "DE-SN".
+
+eccenca:Stuttgart a odette:NonRegisteredEntity;
+  odette:lastUpdate "2014-07-23T17:10:52"^^xsd:dateTime;
+  odette:telephoneNumber " +49 (0) 511 - 33 65 28-10";
+  odette:address eccenca:AddressStuttgart;
+  odette:faxNumber "+49 (0) 511 - 33 65 28-99".
+
+eccenca:AddressStuttgart a odette:Address;
+  odette:street "Meisenweg 35";
+  odette:city "Leinfelden-Echterdingen";
+  odette:postCode "70771";
+  odette:countryCode "DE";
+  odette:subCountryCode "DE-BW".

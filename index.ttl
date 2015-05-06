@@ -1,0 +1,345 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dct:<http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix odette: <https://vocab.eccenca.com/odette/> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:<http://xmlns.com/foaf/0.1/> .
+@prefix vann:<http://purl.org/vocab/vann/>.
+
+odette: a owl:Ontology;
+  rdfs:label "ODETTE";
+  rdfs:comment "An RDF vocabulary representing the ODETTE Business Entity Administration schema.";
+  foaf:maker <http://sebastian.tramp.name>;
+  vann:preferredNamespacePrefix "odette";
+  vann:preferredNamespaceUri "https://vocab.eccenca.com/odette/";
+  foaf:homepage <https://github.com/vocol/odette>;
+  foaf:primaryTopic odette:BusinessEntity;
+  vann:changes <https://github.com/vocol/odette/commits/master>;
+  .
+
+odette:type a owl:DatatypeProperty;
+  rdfs:subPropertyOf dct:description;
+  rdfs:label "ODETTE Type Information";
+  .
+
+odette:occurrence a owl:DatatypeProperty;
+  rdfs:subPropertyOf dct:description;
+  rdfs:label "ODETTE Occurrence Information";
+  .
+
+odette:Country a owl:Class;
+  rdfs:subClassOf <http://www.geonames.org/ontology#Country>;
+  rdfs:label "Country";
+  .
+
+odette:Feature a owl:Class;
+  rdfs:subClassOf <http://www.geonames.org/ontology#Feature>;
+  rdfs:label "Feature";
+  .
+
+odette:Document a owl:Class;
+  rdfs:subClassOf foaf:Document;
+  rdfs:label "Document";
+  .
+
+#D - Business Entity
+#D -   Universal Party ID
+#D -   Direct Parent ID
+#D -   Domestic Ultimate Parent ID
+#D -   Global Ultimate Parent ID
+#E -   Previous Universal Party ID
+#E -   Entity Type
+#E -   Functional Entity Type
+#D -   Homepage
+#D -   Name
+#D -   Trade Name
+#E -   Previous Name
+
+odette:BusinessEntity a owl:Class;
+  rdfs:comment "When adding, changing, or deactivating a Business Entity, only one Business Entity shall be included in an administration message, in case of a response to a 'request information' message the Business Entity is repeatable to allow the transmission of all relevant sub-entities.";
+  dct:description """Business Entity denominates any organisational unit within a company, ranging from the legal head office or headquarters down to a sales office or unloading dock. The Business Entity record contains all data for the organisational unit that is relevant to exchanges between business partners.
+Business entities may be described as Registered or Non-Registered.
+Registered entities are those organisational units which have been allocated a unique registration number by an appropriate registration authority (e.g. Dun & Bradstreet). Non-Registered entities are those organisational units which have not been allocated such a unique registration number.
+Each Business Entity (Registered or Non-Registered) will have a Universal Party ID (UPI) which is constructed according to the Odette Recommendation based on ISO6523 rules.
+The UPI consists of 3 segments and for Non-Registered entities the first two segments of the UPI will be identical to those of the UPI of their associated Registered entity. Records for Non- Registered entities may therefore only be created when a record for the associated Registered Entity already exists.
+Each Business Entity (Registered or Non-Registered) may also be associated with other Business Entities through separate links within the Business Entity record (e.g. direct parent ID, functional reference etc.).
+""";
+  rdfs:label "Business Entity";
+  .
+
+odette:LegalHeadOffice a owl:Class;
+  rdfs:subClassOf odette:BusinessEntity;
+  rdfs:comment "equals to entity-type 001";
+  rdfs:label "Legal Head Office";
+  .
+
+odette:OtherRegisteredEntity a owl:Class;
+  rdfs:subClassOf odette:BusinessEntity;
+  rdfs:comment "equals to entity-type 002";
+  rdfs:label "Other Registered Entity";
+  .
+
+odette:NonRegisteredEntity a owl:Class;
+  rdfs:subClassOf odette:BusinessEntity;
+  rdfs:comment "equals to entity-type 003";
+  rdfs:label "Non-Registered Entity";
+  .
+
+odette:officeLocation a owl:ObjectProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:BusinessEntity;
+  rdfs:label "Office Location";
+  .
+
+odette:homepage a owl:DatatypeProperty;
+  dct:description "Topmost URL of the entity";
+  odette:type "XSD Data types::string";
+  odette:occurrence "0..1";
+  rdfs:label "Homepage";
+  .
+
+odette:name a owl:DatatypeProperty;
+  odette:type "Main::core::String..90";
+  odette:occurrence "0 .. unbounded";
+  dct:description "Name of the entity";
+  rdfs:comment """The attribute can be repeated in various languages. A maximum of 1 line per language is recommended.
+For B2B processes (in XML messages), this information may be transmitted with a language attribute and is repeatable.
+For creation or change of business entity data, this field is required.""";
+  rdfs:label "Name";
+  .
+
+odette:tradeName a owl:DatatypeProperty;
+  odette:type "Main::core::String..90";
+  dct:description "Marketing or brand name, may be different to the legal name";
+  rdfs:comment """The attribute can be repeated in various languages. A maximum of 1 line per language is recommended.
+For B2B processes (in XML messages), this information may be transmitted with a language attribute and is repeatable.""";
+  odette:occurrence "0..unbounded";
+  rdfs:label "Trade Name";
+  .
+
+odette:previousName a owl:DatatypeProperty;
+  odette:type "Main::core::String..90";
+  dct:description "Previously used name of the entity.";
+  rdfs:comment """The attribute can be repeated in various languages. A maximum of 1 line per language is recommended.
+For B2B processes (in XML messages), this information may be transmitted with a language attribute and is repeatable.""";
+  rdfs:label "Previous Name";
+  .
+
+
+#D -   Address
+#D -      Street
+#D -      City
+#D -      Post Code
+#D -      Post Box ID
+#D -      Post Code POBox
+#D -      Sub Country Code
+#D -      Address Line Text
+#D -      Country Code
+#D -      Time Zone
+
+odette:address a owl:ObjectProperty;
+  rdfs:domain odette:BusinessEntity;
+  rdfs:range odette:Address;
+  rdfs:label "(Main) Address";
+  .
+
+odette:mailingAddress a owl:ObjectProperty;
+  rdfs:domain odette:BusinessEntity;
+  rdfs:range odette:Address;
+  rdfs:label "Mailing Address";
+  .
+
+odette:Address a owl:Class;
+  dct:description """Physical address incl. street or building ID. For a legal head office, this address is the legal address as registered within commercial registers. For B2B processes (in XML messages), language dependent parts of the address may be transmitted with a language attribute and are repeatable.""";
+  rdfs:comment """Recommeded usage:
+Variant 1: Structured address
+Street, Post Code, City, Country Code
+Variant 2: Structured Address
+Post Box ID, Post Code POBox, City, Country Code
+For creation or change of business entity data, this field is required.""";
+  rdfs:label "Address";
+  .
+
+odette:street a owl:DatatypeProperty;
+  odette:type "Main::core::String..35";
+  odette:occurrence "0 .. unbounded";
+  dct:description "The name that identifies the location of a house or building: usually within a street as part of an address.";
+  rdfs:comment "For B2B processes (in XML messages), this information may be transmitted with a language attribute and is repeatable. A maximum of 2 lines per language is recommended.";
+  rdfs:label "Street";
+  .
+
+odette:city a owl:DatatypeProperty;
+  odette:type "Main::core::String..35";
+  odette:occurrence "1 .. unbounded";
+  dct:description """The name of the city, town, or village of this address.""";
+  rdfs:comment """For B2B processes (in XML messages), this information may be transmitted with a language attribute and is repeatable. One line per language is recommended.""";
+  rdfs:label "City";
+  .
+
+odette:postCode a owl:DatatypeProperty;
+  odette:type "Main::core::String..9";
+  odette:occurrence "0..1";
+  dct:description """The identifier for one or more properties according to the postal service of that country; a group of letters and/or numbers added to the postal address to assist in the sorting of mail.""";
+  rdfs:label "Post Code";
+  .
+
+odette:postBoxId a owl:DatatypeProperty;
+  odette:type "Main::core::String..35";
+  odette:occurrence "0..1";
+  dct:description """Identifier of a post box according to the national postal services.""";
+  rdfs:label "Post Box ID";
+  .
+
+odette:postCodePoBox a owl:DatatypeProperty;
+  odette:type "Main::core::String..9";
+  odette:occurrence "0..1";
+  dct:description """The identifier for a post box according to the postal service of that country; a group of letters and/or numbers added to the postal address to assist in the sorting of mail.""";
+  rdfs:label "Post Code POBox";
+  .
+
+odette:subCountryCode a owl:DatatypeProperty;
+  odette:type "Main::core::String..9";
+  odette:occurrence "0..1";
+  dct:description """State or region within a country. The use of ISO 3166-2 is recommended.""";
+  rdfs:seeAlso <http://www.unece.org/cefact/locode/service/main.htm>, <http://www.iso.org/iso/en/prods-services/iso3166ma/index.html>;
+  rdfs:label "Sub Country Code";
+  .
+
+odette:addressLineText a owl:DatatypeProperty;
+  odette:type "Main::core::String..35";
+  odette:occurrence "0 .. unbounded";
+  dct:description """A text line containing non-structured address information.""";
+  rdfs:comment """Repeatable in various languages, a maximum number of 5 lines per language is recommended.""";
+  rdfs:label "Address Line Text";
+  .
+
+odette:countryCode a owl:DatatypeProperty;
+  odette:type "Main::core::Country Code";
+  odette:occurrence "1..1";
+  dct:description """Provides the country part of an address using a code.
+Use ISO3166 two alpha code.""";
+  rdfs:seeAlso <http://www.unece.org/cefact/locode/service/main.htm>,<http://www.iso.org/iso/en/prods-services/iso3166ma/index.html>;
+  rdfs:label "Country Code";
+  .
+
+odette:timeZone a owl:DatatypeProperty;
+  odette:type "Main::core::String..10";
+  odette:occurrence "0..1";
+  dct:description """Time zone as difference to UTC e.g. UTC+01:00""";
+  rdfs:label "Time Zone";
+  .
+
+#D -   General Contact
+#D -      Telephone Number
+#D -      Fax Number
+#D -      Email Address
+#D -      Preferred Language
+
+odette:telephoneNumber a owl:DatatypeProperty;
+  odette:type "Main::core::String..100";
+  odette:occurrence "1..1";
+  dct:description """The number or virtual 'address' of a telephone in a telecommunication system""";
+  rdfs:label "Telephone Number";
+  .
+
+odette:faxNumber a owl:DatatypeProperty;
+  odette:type "Main::core::String..100";
+  odette:occurrence "0..1";
+  dct:description """The number or virtual 'address' of a facsimile in a telecommunication system""";
+  rdfs:label "Fax Number";
+  .
+
+odette:emailAddress a owl:DatatypeProperty;
+  odette:type "Main::core::String..100";
+  odette:occurrence "0..1";
+  dct:description """The number or virtual 'address' of an e-mail mailbox in the internet or other network.""";
+  rdfs:label "Email Address";
+  .
+
+
+#odette:generalContact a owl:ObjectProperty;
+#  rdfs:domain odette:BusinessEntity;
+#  rdfs:range odette:Contact;
+#  rdfs:label "General Contact".
+
+#D -   Legal Entity Details
+#D -      Place Of Jurisdiction
+#D -      Legal Form
+#D -          Legal Form Code
+#D -          Legal Form Text
+#E -      Registered Capital
+#E -          Amount Value
+#E -          Currency Code
+#E -      Minority Business Enterprise
+#E -          Minority Owned Business Identification Code
+#E -          Certifying Agency
+#E -          Certificate Expiration Date
+#E -   Tax Registration Details
+#E -      VAT Registration ID
+#E -      Fiscal Registration ID
+#E -   Bank Account Details
+#E -        Currency Code
+#E -        Account Holder Name
+#E -        Bank Identification
+#E -           Bank Branch ID
+#E -           Agency
+#E -           Code List ID
+#E -           Bank Name
+#E -           City
+#E -           Country Code
+#E -           SWIFT Code
+
+odette:isClientOf a owl:ObjectProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:LegalHeadOffice;
+  rdfs:label "is client of";
+  .
+
+odette:isSupplierOf a owl:ObjectProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:LegalHeadOffice;
+  rdfs:label "is supplier of";
+  .
+
+odette:lastUpdate a owl:DatatypeProperty;
+  rdfs:range xsd:dateTime;
+  rdfs:label "last update";
+  .
+
+odette:logo a owl:ObjectProperty;
+  rdfs:subPropertyOf foaf:logo;
+  rdfs:label "logo";
+  .
+
+odette:billingAddress a owl:ObjectProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:Address;
+  rdfs:label "Billing Address";
+  .
+
+odette:additionalLink a owl:DatatypeProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:Document;
+  rdfs:label "additional link";
+  .
+
+odette:standardFormContract a owl:ObjectProperty;
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:range odette:Document;
+  rdfs:label "Standard form contract";
+  .
+
+odette:vATRegistrationId a owl:DatatypeProperty;
+  dct:description "Unique number assigned by the relevant tax authority to identify a party for use in relation to Value Added Tax (VAT).";
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:label "VAT Registration ID";
+  .
+
+odette:fiscalRegistrationId a owl:DatatypeProperty;
+  dct:description "Tax payer's number. Number assigned to individual persons as well as to corporates by a public institution; this number is different from the VAT registration number.";
+  rdfs:domain odette:LegalHeadOffice;
+  rdfs:label "Fiscal Registration ID";
+  .
+
+
