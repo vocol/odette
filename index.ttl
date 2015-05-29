@@ -86,6 +86,13 @@ odette:NonRegisteredEntity a owl:Class;
   rdfs:label "Non-Registered Entity";
   .
 
+odette:directParent a owl:ObjectProperty;
+  rdfs:domain odette:BusinessEntity;
+  rdfs:range odette:BusinessEntity;
+  rdfs:label "Direct Parent";
+  dct:description "The closest legal entity in the company's hierarchy (next higher entity), which is usually the parent company. A parent company applies only if the share exceeds 50%."
+.
+
 odette:officeLocation a owl:ObjectProperty;
   rdfs:domain odette:LegalHeadOffice;
   rdfs:range odette:BusinessEntity;
@@ -236,6 +243,10 @@ odette:timeZone a owl:DatatypeProperty;
 #D -      Email Address
 #D -      Preferred Language
 
+odette:position a owl:DatatypeProperty;
+  rdfs:label "position";
+.
+
 odette:telephoneNumber a owl:DatatypeProperty;
   odette:type "Main::core::String..100";
   odette:occurrence "1..1";
@@ -258,7 +269,8 @@ odette:emailAddress a owl:DatatypeProperty;
   .
 
 
-#odette:generalContact a owl:ObjectProperty;
+odette:generalContact a owl:ObjectProperty;
+.
 #  rdfs:domain odette:BusinessEntity;
 #  rdfs:range odette:Contact;
 #  rdfs:label "General Contact".
